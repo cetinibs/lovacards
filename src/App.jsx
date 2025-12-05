@@ -183,13 +183,15 @@ function App() {
 
   // Copy link
   const copyLink = () => {
-    navigator.clipboard.writeText(`https://lovecards.app/c/${cardId}`);
+    const cardUrl = `${window.location.origin}${window.location.pathname}?card=${cardId}`;
+    navigator.clipboard.writeText(cardUrl);
     alert('Link kopyalandı!');
   };
 
   // Share WhatsApp
   const shareWhatsApp = () => {
-    const text = `${recipientName} için özel bir kart hazırladım! 💕\n\nhttps://lovecards.app/c/${cardId}`;
+    const cardUrl = `${window.location.origin}${window.location.pathname}?card=${cardId}`;
+    const text = `💕 ${recipientName} için özel bir kart hazırladım!\n\n${cardTemplates[cardType]?.emoji} ${cardTemplates[cardType]?.title} Kartı\n\n${customMessage.substring(0, 100)}${customMessage.length > 100 ? '...' : ''}\n\nSevgiyle, ${senderName} 💕`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
