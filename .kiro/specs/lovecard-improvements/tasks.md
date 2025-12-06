@@ -1,6 +1,7 @@
 # Implementation Plan
 
-- [ ] 1. Set up testing infrastructure and utilities
+- [-] 1. Set up testing infrastructure and utilities
+
   - Install and configure Vitest, fast-check, React Testing Library, and jest-axe
   - Create test setup files and configuration
   - Set up test utilities and helpers

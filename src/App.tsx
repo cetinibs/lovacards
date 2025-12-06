@@ -180,7 +180,8 @@ export default function App() {
   // --- RENDERERS ---
 
   const renderHeader = () => (
-    <header className="absolute top-0 left-0 right-0 z-20 px-4 py-3 flex items-center justify-between bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-rose-100 dark:border-slate-800 transition-colors duration-300" role="banner">
+    <header className="sticky top-0 left-0 right-0 z-20 px-4 md:px-8 py-4 flex items-center justify-between bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-rose-100 dark:border-slate-800 transition-colors duration-300" role="banner">
+      <div className="w-full max-w-4xl mx-auto flex items-center justify-between">
       <button
         onClick={() => setStep(step === AppStep.LANDING ? AppStep.LANDING : step - 1)}
         disabled={step === AppStep.LANDING}
@@ -249,6 +250,7 @@ export default function App() {
           {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
       </div>
+      </div>
     </header>
   );
 
@@ -263,43 +265,45 @@ export default function App() {
     const helpText = getHelpText();
 
     return (
-      <footer className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent dark:from-slate-900 dark:via-slate-900 z-20 pt-10" role="contentinfo">
-        {helpText && isDisabled && (
-          <p className="text-center text-xs text-gray-400 dark:text-slate-500 mb-2 animate-pulse">
-            {helpText}
-          </p>
-        )}
-        <button
-          onClick={step === 3 ? handleFinish : () => setStep(step + 1)}
-          disabled={isDisabled}
-          className={`w-full py-4 rounded-2xl font-bold text-white shadow-lg flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] text-lg focus:outline-none focus:ring-4 focus:ring-rose-300 dark:focus:ring-rose-900 ${
-            isDisabled
-            ? 'bg-gray-300 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed shadow-none'
-            : 'bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 shadow-rose-200 dark:shadow-none hover:shadow-xl'
-          }`}
-          aria-label={step === 3 ? t.finishCard : t.continue}
-        >
-          {isGenerating ? (
-            <>
-              <Sparkles className="w-5 h-5 animate-spin" />
-              <span>{lang === 'tr' ? 'Bekleyin...' : 'Please wait...'}</span>
-            </>
-          ) : (
-            <>
-              {step === 3 ? (
-                <>
-                  <CheckCircle className="w-5 h-5" />
-                  {t.finishCard}
-                </>
-              ) : (
-                <>
-                  {t.continue}
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
-            </>
+      <footer className="fixed bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-white via-white to-transparent dark:from-slate-900 dark:via-slate-900 z-20" role="contentinfo">
+        <div className="w-full max-w-4xl mx-auto">
+          {helpText && isDisabled && (
+            <p className="text-center text-xs text-gray-400 dark:text-slate-500 mb-2 animate-pulse">
+              {helpText}
+            </p>
           )}
-        </button>
+          <button
+            onClick={step === 3 ? handleFinish : () => setStep(step + 1)}
+            disabled={isDisabled}
+            className={`w-full md:w-auto md:min-w-[300px] md:mx-auto md:flex py-4 px-8 rounded-2xl font-bold text-white shadow-lg flex items-center justify-center gap-2 transition-all transform active:scale-[0.98] text-lg focus:outline-none focus:ring-4 focus:ring-rose-300 dark:focus:ring-rose-900 ${
+              isDisabled
+              ? 'bg-gray-300 dark:bg-slate-700 text-gray-400 dark:text-slate-500 cursor-not-allowed shadow-none'
+              : 'bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 shadow-rose-200 dark:shadow-none hover:shadow-xl'
+            }`}
+            aria-label={step === 3 ? t.finishCard : t.continue}
+          >
+            {isGenerating ? (
+              <>
+                <Sparkles className="w-5 h-5 animate-spin" />
+                <span>{lang === 'tr' ? 'Bekleyin...' : 'Please wait...'}</span>
+              </>
+            ) : (
+              <>
+                {step === 3 ? (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    {t.finishCard}
+                  </>
+                ) : (
+                  <>
+                    {t.continue}
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
+              </>
+            )}
+          </button>
+        </div>
       </footer>
     );
   };
@@ -309,7 +313,7 @@ export default function App() {
     switch (step) {
       case AppStep.LANDING:
         return (
-          <div className="flex flex-col items-center justify-center min-h-full py-12 px-6 text-center" role="main">
+          <div className="flex flex-col items-center justify-center min-h-screen py-12 px-4 md:px-8 text-center" role="main">
             {/* Hero Section */}
             <div className="relative mb-8">
               <div className="absolute inset-0 bg-rose-400 blur-3xl opacity-20 animate-pulse"></div>
@@ -395,7 +399,7 @@ export default function App() {
 
       case AppStep.DETAILS:
         return (
-          <div className="pt-24 px-6 pb-32 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="pt-8 md:pt-12 px-4 md:px-8 pb-32 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2 font-serif">{t.letsStart}</h2>
             <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">{t.whoIsFor}</p>
 
@@ -444,7 +448,7 @@ export default function App() {
 
               <div>
                 <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">{t.occasionLabel}</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
                   {occasionKeys.map((key) => {
                     const occText = t.occasions[key];
                     const isSelected = formData.occasion === occText;
@@ -470,7 +474,7 @@ export default function App() {
 
       case AppStep.BOUQUET:
         return (
-          <div className="pt-24 px-6 pb-32 flex flex-col h-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="pt-8 md:pt-12 px-4 md:px-8 pb-32 flex flex-col min-h-screen animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-3xl mx-auto">
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-1 font-serif">{t.designBouquet}</h2>
@@ -489,7 +493,7 @@ export default function App() {
             {/* Bouquet Visualizer */}
             <div className="relative mb-6 group shrink-0" role="region" aria-label={lang === 'tr' ? 'Seçilen çiçekler' : 'Selected flowers'}>
                <div className="absolute inset-0 bg-rose-200 dark:bg-rose-900/20 blur-2xl rounded-full opacity-30"></div>
-               <div className="relative bg-white dark:bg-slate-800 rounded-[2rem] h-52 border-2 border-dashed border-rose-100 dark:border-slate-700 flex flex-wrap items-center justify-center p-4 content-center gap-1 shadow-sm overflow-hidden transition-colors">
+               <div className="relative bg-white dark:bg-slate-800 rounded-[2rem] h-52 md:h-64 border-2 border-dashed border-rose-100 dark:border-slate-700 flex flex-wrap items-center justify-center p-4 md:p-6 content-center gap-1 md:gap-2 shadow-sm overflow-hidden transition-colors">
                   {formData.bouquet.length === 0 && (
                     <div className="text-center text-gray-300 dark:text-slate-600 flex flex-col items-center animate-pulse">
                        <Heart className="w-10 h-10 mb-2" />
@@ -522,7 +526,7 @@ export default function App() {
             </div>
 
             {/* Scrollable Grid */}
-            <div className="grid grid-cols-3 gap-2 overflow-y-auto no-scrollbar pb-4" role="listbox" aria-label={lang === 'tr' ? 'Çiçek seçenekleri' : 'Flower options'}>
+            <div className="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-3 overflow-y-auto no-scrollbar pb-4" role="listbox" aria-label={lang === 'tr' ? 'Çiçek seçenekleri' : 'Flower options'}>
               {FLOWERS.map((flower, index) => {
                 const isSelected = formData.bouquet.find(f => f.id === flower.id);
                 const flowerKey = flowerKeys[index];
@@ -559,7 +563,7 @@ export default function App() {
 
       case AppStep.AI_STUDIO:
         return (
-          <div className="pt-24 px-6 pb-32 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="pt-8 md:pt-12 px-4 md:px-8 pb-32 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2 font-serif">{t.aiStudio}</h2>
              <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">{t.aiInstruction}</p>
 
@@ -655,7 +659,7 @@ export default function App() {
              </div>
 
              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">{t.backgroundMusic}</h3>
-             <div className="space-y-2">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                {MUSIC_TRACKS.map(track => (
                  <button
                    key={track.id}
@@ -681,7 +685,7 @@ export default function App() {
 
       case AppStep.PREVIEW:
         return (
-          <div className="flex flex-col items-center justify-center h-full p-6 animate-in zoom-in duration-500">
+          <div className="flex flex-col items-center justify-center min-h-screen p-4 md:p-8 animate-in zoom-in duration-500 max-w-3xl mx-auto">
              <div className="text-center mb-4">
                <div className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-4 py-2 rounded-full mb-3">
                  <CheckCircle className="w-4 h-4" />
@@ -780,31 +784,22 @@ export default function App() {
 
   // --- MAIN APP LAYOUT ---
   return (
-    <div className={`min-h-screen w-full flex items-center justify-center transition-colors duration-500 ${step === AppStep.RECIPIENT_VIEW ? 'bg-black' : 'bg-rose-100 dark:bg-slate-950'}`}>
-      
+    <div className={`min-h-screen w-full transition-colors duration-500 ${step === AppStep.RECIPIENT_VIEW ? 'bg-black' : 'bg-gradient-to-br from-rose-50 via-white to-rose-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950'}`}>
+
       {step !== AppStep.RECIPIENT_VIEW && <BackgroundPattern />}
       {showProModal && <ProModal onClose={() => setShowProModal(false)} />}
 
-      {/* PHONE FRAME CONTAINER 
-          On Mobile: Full screen (h-full w-full)
-          On Desktop: Fixed width/height, rounded borders, shadow
-      */}
-      <div 
-        className={`
-          relative w-full h-[100dvh] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl 
-          transition-all duration-500 overflow-hidden flex flex-col shadow-2xl
-          md:w-[400px] md:h-[800px] md:rounded-[3rem] md:border-[8px] md:border-gray-900/10 dark:md:border-slate-800
-        `}
-      >
+      {/* FULL WIDTH WEB LAYOUT */}
+      <div className="relative w-full min-h-screen bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
         {/* Only show header/footer if we are NOT in Recipient View */}
         {step !== AppStep.RECIPIENT_VIEW && (
           <>
             {renderHeader()}
-            
-            {/* Scrollable Content Area */}
-            <div 
+
+            {/* Scrollable Content Area - Centered with max width */}
+            <div
               ref={scrollRef}
-              className="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth no-scrollbar"
+              className="w-full max-w-4xl mx-auto px-4 md:px-8 overflow-y-auto overflow-x-hidden relative scroll-smooth no-scrollbar"
             >
               {renderStepContent()}
             </div>
