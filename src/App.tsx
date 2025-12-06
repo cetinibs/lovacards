@@ -7,6 +7,7 @@ import { RecipientCard } from './components/RecipientCard';
 import { ProModal } from './components/ProModal';
 import { BackgroundPattern } from './components/BackgroundPattern';
 import { TRANSLATIONS } from './locales';
+import { useAuth } from './contexts/AuthContext';
 
 type LangCode = 'en' | 'tr';
 
@@ -25,9 +26,11 @@ const COMMUNITY_CARDS: GalleryItem[] = [
 ];
 
 export default function App() {
+  // Auth Context
+  const { canCreateCard, incrementCardCount, loading: authLoading } = useAuth();
+
   // State
   const [step, setStep] = useState<AppStep>(AppStep.LANDING);
-  const [usageCount, setUsageCount] = useState(0);
   const [showProModal, setShowProModal] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -59,9 +62,6 @@ export default function App() {
   }, [lang]);
 
   useEffect(() => {
-    const storedCount = localStorage.getItem('loveCardUsage');
-    if (storedCount) setUsageCount(parseInt(storedCount, 10));
-
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setIsDarkMode(true);
     }
@@ -84,7 +84,7 @@ export default function App() {
 
   // Handlers
   const handleStart = () => {
-    if (usageCount >= 1) {
+    if (!canCreateCard()) {
       setShowProModal(true);
     } else {
       setStep(AppStep.DETAILS);
@@ -123,10 +123,8 @@ export default function App() {
     }
   };
 
-  const handleFinish = () => {
-    const newCount = usageCount + 1;
-    setUsageCount(newCount);
-    localStorage.setItem('loveCardUsage', newCount.toString());
+  const handleFinish = async () => {
+    await incrementCardCount();
     setStep(AppStep.PREVIEW);
   };
 
@@ -783,11 +781,24 @@ export default function App() {
   };
 
   // --- MAIN APP LAYOUT ---
+
+  // Show loading state while auth is initializing
+  if (authLoading) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-rose-50 via-white to-rose-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+        <div className="text-center">
+          <Heart className="w-12 h-12 text-rose-500 animate-pulse mx-auto mb-4" />
+          <p className="text-gray-500 dark:text-gray-400">{lang === 'tr' ? 'Yükleniyor...' : 'Loading...'}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen w-full transition-colors duration-500 ${step === AppStep.RECIPIENT_VIEW ? 'bg-black' : 'bg-gradient-to-br from-rose-50 via-white to-rose-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950'}`}>
 
       {step !== AppStep.RECIPIENT_VIEW && <BackgroundPattern />}
-      {showProModal && <ProModal onClose={() => setShowProModal(false)} />}
+      {showProModal && <ProModal onClose={() => setShowProModal(false)} lang={lang} />}
 
       {/* FULL WIDTH WEB LAYOUT */}
       <div className="relative w-full min-h-screen bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
