@@ -1,0 +1,5 @@
+{
+  "name": "LoveCard AI",
+  "description": "A romantic web application to create personalized digital cards with custom bouquets and AI-generated poems using Gemini.",
+  "requestFramePermissions": []
+}
